@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ app_name }}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">FastAPI + SMTP</p>
+      <h1>Bulk Recruiter Email Sender</h1>
+      <p>
+        Validate and deduplicate recruiter addresses, then send one private,
+        résumé-attached email per recipient.
+      </p>
+    </header>
+
+    <section id="modeBanner" class="banner hidden"></section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>1. Recruiter addresses</h2>
+          <p>Paste newline-, comma-, semicolon-, or space-separated addresses.</p>
+        </div>
+        <span id="limitBadge" class="badge">Loading limit…</span>
+      </div>
+
+      <label for="recipients">Email addresses</label>
+      <textarea
+        id="recipients"
+        rows="10"
+        placeholder="recruiter1@company.com&#10;recruiter2@company.com"
+      ></textarea>
+
+      <div class="button-row">
+        <button id="validateButton" class="secondary" type="button">
+          Validate addresses
+        </button>
+      </div>
+
+      <div id="validationResult" class="result hidden"></div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Application email</h2>
+
+      <label for="subject">Subject</label>
+      <input id="subject" type="text" maxlength="998">
+
+      <label for="body">Body</label>
+      <textarea id="body" rows="15"></textarea>
+
+      <label for="resume">Résumé PDF</label>
+      <input id="resume" type="file" accept="application/pdf,.pdf">
+      <p id="resumeHelp" class="help"></p>
+
+      <label class="confirmation">
+        <input id="confirmation" type="checkbox">
+        <span>
+          I confirm these are legitimate professional contacts and that my
+          outreach complies with applicable rules and provider policies.
+        </span>
+      </label>
+
+      <div class="button-row">
+        <button id="sendButton" type="button">Start background job</button>
+        <button id="cancelButton" class="danger hidden" type="button">
+          Cancel job
+        </button>
+      </div>
+
+      <div id="formError" class="error hidden"></div>
+    </section>
+
+    <section id="progressPanel" class="panel hidden" aria-live="polite">
+      <div class="panel-heading">
+        <div>
+          <h2>3. Live progress</h2>
+          <p id="jobStatus">Queued</p>
+        </div>
+        <span id="progressPercent" class="badge">0%</span>
+      </div>
+
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div class="metrics">
+        <article>
+          <strong id="processedCount">0</strong>
+          <span>Processed</span>
+        </article>
+        <article>
+          <strong id="sentCount">0</strong>
+          <span id="sentLabel">Sent</span>
+        </article>
+        <article>
+          <strong id="failedCount">0</strong>
+          <span>Failed</span>
+        </article>
+        <article>
+          <strong id="totalCount">0</strong>
+          <span>Total</span>
+        </article>
+      </div>
+
+      <div id="duplicateInfo" class="help"></div>
+      <div id="failureList" class="failure-list hidden">
+        <h3>Failures</h3>
+        <ul id="failureItems"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
