@@ -1,8 +1,9 @@
 services:
-  recruiter-mailer:
-    build: .
-    env_file:
-      - .env
+  bulk-recruiter:
+    image: sainaveenadep/bulk-recruiter:latest
+    container_name: bulk-rectuiter
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     restart: unless-stopped

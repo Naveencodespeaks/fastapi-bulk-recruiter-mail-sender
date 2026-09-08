@@ -5,3 +5,4 @@ __pycache__/
 .env
 runtime_uploads/
 .DS_Store
+.env
