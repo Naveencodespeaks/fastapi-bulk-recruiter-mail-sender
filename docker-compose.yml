@@ -1,7 +1,7 @@
 services:
   bulk-recruiter:
     image: sainaveenadep/bulk-recruiter:latest
-    container_name: bulk-rectuiter
+    container_name: bulk-recruiter
     ports:
       - "8000:8000"
     env_file:
