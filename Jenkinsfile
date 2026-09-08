@@ -60,7 +60,7 @@ pipeline {
 
                 withCredentials([
                     usernamePassword(
-                        credentialsId: '397bdc18-0c50-4e69-a2fa-0b08fbeabff5',
+                        credentialsId: 'ec609db9-c343-4264-ad15-0c5e3a9c8e2c',
                         usernameVariable: 'DOCKER_USERNAME',
                         passwordVariable: 'DOCKER_PASSWORD'
                     )
