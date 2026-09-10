@@ -8,28 +8,42 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 ENV_FILE = PROJECT_ROOT / ".env"
 
-
 DEFAULT_SUBJECT = (
-    "Application for Python / AI Engineer | FastAPI, GenAI, RAG, AWS"
+    "Application for DevOps Engineer | AWS, Docker, Jenkins, Terraform, Kubernetes"
 )
 
 DEFAULT_BODY = """Dear Hiring Manager,
 
-I hope you are doing well.
+I am writing to express my interest in the DevOps Engineer position at your organization.
 
-I am Sai Naveen Adep, an AI Automation Engineer and Python Developer with over 2+ years of experience in building scalable backend applications using Python and FastAPI, also Generative AI solutions, agentic AI workflows, RAG pipelines.
+I am Sai Naveen Adep, an AI Generalist and Python Developer transitioning into Cloud and DevOps Engineering, with hands-on experience building, containerizing, deploying, and automating applications.
 
-My core technical skills include Python, FastAPI, LangChain, LangGraph, n8n, RAG, LLM integration, PostgreSQL, Docker, AWS, GitHub Actions, and REST API development.
+My technical experience includes:
 
-Please find my résumé attached for your consideration.
+- Linux and Shell Scripting
+- Git and GitHub
+- Docker and Docker Compose
+- Jenkins and CI/CD Pipelines
+- AWS including EC2, VPC, ECR, and EKS
+- Terraform for Infrastructure as Code
+- Kubernetes and Container Orchestration
+- Application Deployment and Troubleshooting
+- Monitoring and Observability Concepts
+- Python and Backend Application Development
 
-Thank you for your time.
+I have been working on practical DevOps projects involving Dockerized applications, Jenkins CI/CD pipelines, AWS infrastructure, Terraform, Kubernetes, and deployment automation. I am particularly interested in building reliable, scalable, and automated cloud infrastructure.
+
+I am highly motivated to grow my career in DevOps and Cloud Engineering and would welcome the opportunity to contribute to your team. I am available to join immediately and am open to relocation if required.
+
+Please find my resume attached for your consideration. I would appreciate the opportunity to discuss how my skills and experience align with the role.
+
+Thank you for your time and consideration.
 
 Best regards,
 Sai Naveen Adep
-AI Automation Engineer | Python Developer
-+91 9391267369
-sainaveenadepu@gmail.com
+AI Generalist | DevOps Engineer | AI Automation & Python Developer
+Phone: +91 9391267369
+Email: sainaveenadepu@gmail.com
 LinkedIn: linkedin.com/in/sainaveenadepu666
 Location: Hyderabad, India
 """
