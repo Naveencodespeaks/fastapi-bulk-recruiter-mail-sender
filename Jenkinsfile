@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'sainaveenadep/bulk-recruiter'
+        IMAGE_NAME = 'sainaveenadep/cold-email-python:latest'
         IMAGE_TAG  = "${BUILD_NUMBER}"
         CONTAINER  = 'bulk-recruiter'
     }
