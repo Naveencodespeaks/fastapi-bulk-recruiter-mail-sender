@@ -1,6 +1,6 @@
 services:
   bulk-recruiter:
-    image: sainaveenadep/bulk-recruiter:latest
+    image: sainaveenadep/cold-email-python:latest
     container_name: bulk-recruiter
     ports:
       - "8000:8000"
