@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -13,6 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo '📥 Checking out source code...'
+
                 checkout scm
             }
         }
@@ -24,6 +24,7 @@ pipeline {
                 sh '''
                     python3 -m venv venv
                     . venv/bin/activate
+
                     pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
@@ -36,6 +37,7 @@ pipeline {
 
                 sh '''
                     . venv/bin/activate
+
                     pytest -v
                 '''
             }
@@ -83,10 +85,28 @@ pipeline {
             steps {
                 echo '🚀 Deploying application...'
 
-                sh '''
-                    docker compose pull
-                    docker compose up -d --force-recreate
-                '''
+                withCredentials([
+                    file(
+                        credentialsId: 'env',
+                        variable: 'ENV_FILE'
+                    )
+                ]) {
+                    sh '''
+                        echo "📄 Loading environment configuration..."
+
+                        cp "$ENV_FILE" .env
+
+                        echo "🐳 Pulling latest Docker image..."
+
+                        docker compose pull
+
+                        echo "🚀 Starting application..."
+
+                        docker compose up -d --force-recreate
+
+                        echo "✅ Application deployment completed."
+                    '''
+                }
             }
         }
 
@@ -95,9 +115,15 @@ pipeline {
                 echo '❤️ Checking application health...'
 
                 sh '''
+                    echo "⏳ Waiting for application to start..."
+
                     sleep 10
 
-                    curl --fail http://localhost:8000/ || exit 1
+                    echo "🔍 Checking http://localhost:8000/ ..."
+
+                    curl --fail --silent --show-error \
+                        http://localhost:8000/ \
+                        || exit 1
 
                     echo "✅ Application is healthy!"
                 '''
@@ -109,18 +135,18 @@ pipeline {
 
         success {
             echo '🎉 CI/CD pipeline completed successfully!'
-            echo '🚀 FastAPI application has been deployed.'
+            echo '🚀 FastAPI application has been deployed successfully.'
         }
 
         failure {
-            echo '❌ Pipeline failed.'
-            echo 'Check the Jenkins console output for details.'
+            echo '❌ CI/CD pipeline failed.'
+            echo '🔍 Check the Jenkins console output for the exact error.'
         }
 
         always {
             echo '🧹 Cleaning Jenkins workspace...'
+
             cleanWs()
         }
     }
 }
-
