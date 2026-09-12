@@ -1,6 +1,6 @@
 services:
   bulk-recruiter:
-    image: sainaveenadepu/cold-email-python:latest
+    image: 280710007209.dkr.ecr.ap-south-2.amazonaws.com/cold-email-python:latest
     container_name: bulk-recruiter
     ports:
       - "8000:8000"

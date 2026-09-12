@@ -1,10 +1,18 @@
+```groovy
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'sainaveenadepu/cold-email-python'
-        IMAGE_TAG  = "${BUILD_NUMBER}"
-        CONTAINER  = 'bulk-recruiter'
+        AWS_REGION  = 'ap-south-2'
+        AWS_ACCOUNT = '280710007209'
+
+        ECR_REPO    = 'cold-email-python'
+        ECR_REGISTRY = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+
+        IMAGE_NAME  = "${ECR_REGISTRY}/${ECR_REPO}"
+        IMAGE_TAG   = "${BUILD_NUMBER}"
+
+        CONTAINER   = 'bulk-recruiter'
     }
 
     stages {
@@ -43,6 +51,20 @@ pipeline {
             }
         }
 
+        stage('Login to AWS ECR') {
+            steps {
+                echo '🔐 Logging into AWS ECR...'
+
+                sh '''
+                    aws ecr get-login-password \
+                        --region ${AWS_REGION} | \
+                    docker login \
+                        --username AWS \
+                        --password-stdin ${ECR_REGISTRY}
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 echo '🐳 Building Docker image...'
@@ -56,28 +78,14 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Image to ECR') {
             steps {
-                echo '📤 Pushing Docker image to Docker Hub...'
+                echo '📤 Pushing Docker image to AWS ECR...'
 
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'dockerhub-credentials',
-                        usernameVariable: 'DOCKER_USERNAME',
-                        passwordVariable: 'DOCKER_PASSWORD'
-                    )
-                ]) {
-                    sh '''
-                        echo "$DOCKER_PASSWORD" | docker login \
-                            -u "$DOCKER_USERNAME" \
-                            --password-stdin
-
-                        docker push ${IMAGE_NAME}:${IMAGE_TAG}
-                        docker push ${IMAGE_NAME}:latest
-
-                        docker logout
-                    '''
-                }
+                sh '''
+                    docker push ${IMAGE_NAME}:${IMAGE_TAG}
+                    docker push ${IMAGE_NAME}:latest
+                '''
             }
         }
 
@@ -96,7 +104,7 @@ pipeline {
 
                         cp "$ENV_FILE" .env
 
-                        echo "🐳 Pulling latest Docker image..."
+                        echo "🐳 Pulling ECR image..."
 
                         docker compose pull
 
@@ -139,7 +147,7 @@ pipeline {
 
         success {
             echo '🎉 CI/CD pipeline completed successfully!'
-            echo '🚀 FastAPI application has been deployed successfully.'
+            echo '🚀 FastAPI application deployed from AWS ECR.'
         }
 
         failure {
@@ -154,3 +162,5 @@ pipeline {
         }
     }
 }
+```
+
