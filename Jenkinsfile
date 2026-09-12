@@ -100,6 +100,10 @@ pipeline {
 
                         docker compose pull
 
+                        echo "🧹 Removing existing container if present..."
+
+                        docker rm -f "${CONTAINER}" 2>/dev/null || true
+
                         echo "🚀 Starting application..."
 
                         docker compose up -d --force-recreate
